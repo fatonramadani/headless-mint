@@ -1,4 +1,4 @@
-# headless-mint
+# Headless Mint
 
 Headless mint is a headless wrapper around the Candy Machine from Metaplex.
 
