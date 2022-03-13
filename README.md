@@ -19,7 +19,7 @@ HeadlessMint is a React component that encapsulates all the minting logic. You j
 ## useCandyMachine
 
 | Prop              | Type                |
-| ----------------- | :------------------ | --------- |
+| ----------------- | :------------------ |
 | isActive          | boolean             |
 | isMinting         | boolean             |
 | onMint            | () => Promise<void> |
@@ -28,7 +28,7 @@ HeadlessMint is a React component that encapsulates all the minting logic. You j
 | discountPrice?    | anchor.BN           |
 | candyMachine?     | CandyMachineAccount |
 | toggleMintButton? | () => void          |
-| endDate           | Date                | undefined |
+| endDate           | Date                |
 | isPresale         | boolean             |
 | rpcUrl            | string              |
 | alertState?       | AlertType           |
