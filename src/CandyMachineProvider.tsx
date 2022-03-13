@@ -1,5 +1,7 @@
+import { GatewayProvider } from "@civic/solana-gateway-react";
 import * as anchor from "@project-serum/anchor";
 import { useWallet } from "@solana/wallet-adapter-react";
+import { PublicKey } from "@solana/web3.js";
 import {
   createContext,
   PropsWithChildren,
@@ -12,6 +14,7 @@ import {
 import {
   awaitTransactionSignatureConfirmation,
   CandyMachineAccount,
+  CANDY_MACHINE_PROGRAM,
   getCandyMachineState,
   mintOneToken,
 } from "./candyMachine/candy-machine";
@@ -300,7 +303,32 @@ export function CandyMachineProvider({
     alertState,
   };
 
-  return <Context.Provider value={value}>{children}</Context.Provider>;
+  const shouldWrap =
+    candyMachine?.state.isActive &&
+    candyMachine?.state.gatekeeper &&
+    wallet.publicKey &&
+    wallet.signTransaction;
+
+  return (
+    <Context.Provider value={value}>
+      {shouldWrap ? (
+        <GatewayProvider
+          wallet={{
+            publicKey: wallet.publicKey || new PublicKey(CANDY_MACHINE_PROGRAM),
+            // @ts-ignore
+            signTransaction: wallet.signTransaction,
+          }}
+          gatekeeperNetwork={candyMachine?.state?.gatekeeper?.gatekeeperNetwork}
+          clusterUrl={rpcUrl}
+          options={{ autoShowModal: false }}
+        >
+          {children}
+        </GatewayProvider>
+      ) : (
+        children
+      )}
+    </Context.Provider>
+  );
 }
 
 export function useCandyMachine(): SolanaPropsType {
